@@ -1,0 +1,42 @@
+{
+  "name": "Telegram Referral Bot",
+  "description": "A Telegram bot with MongoDB backend and admin controls",
+  "repository": "https://github.com/your-username/your-repo",
+  "keywords": ["telegram", "bot", "pyrogram", "mongodb", "referral"],
+  "env": {
+    "API_ID": {
+      "description": "Telegram API ID from my.telegram.org",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Telegram API HASH from my.telegram.org",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "Bot token from @BotFather",
+      "required": true
+    },
+    "MONGO_URI": {
+      "description": "MongoDB connection URI",
+      "required": true
+    },
+    "DB_NAME": {
+      "description": "MongoDB database name",
+      "value": "ReferralBot",
+      "required": false
+    },
+    "ADMINS": {
+      "description": "Admin Telegram user IDs (comma separated)",
+      "required": false
+    },
+    "ADMIN_GROUP": {
+      "description": "Telegram group ID for admin requests",
+      "required": true
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}
