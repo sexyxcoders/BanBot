@@ -1,23 +1,22 @@
 from pyrogram import filters
-from pyrogram.types import Message
 from bot import app
 from keyboards.main import main_inline
 from database.users import add_user, add_referral
 
 @app.on_message(filters.command("start"))
-async def start(_, message: Message):
-    user_id = message.from_user.id
-    ref = None
-
-    if len(message.command) > 1:
-        ref = int(message.command[1])
-
+async def start_handler(_, m):
+    user_id = m.from_user.id
     add_user(user_id)
 
-    if ref and ref != user_id:
-        add_referral(ref, user_id)
+    if len(m.command) > 1:
+        try:
+            referrer = int(m.command[1])
+            if referrer != user_id:
+                add_referral(referrer, user_id)
+        except:
+            pass
 
-    await message.reply(
+    await m.reply(
         "👋 **Welcome to Referral Bot**\n\n"
         "💰 Earn ₹5 per referral\n"
         "🎯 5 referrals = Reward unlock",
