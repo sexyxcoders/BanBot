@@ -1,28 +1,31 @@
-from database.mongo import requests_col
+from database.mongo import requests
 from datetime import datetime
 
-def create_request(user_id: int):
-    if requests_col.find_one({"user_id": user_id, "status": "pending"}):
+def create_request(user_id: int) -> bool:
+    if requests.find_one({"user_id": user_id, "status": "pending"}):
         return False
 
-    requests_col.insert_one({
+    requests.insert_one({
         "user_id": user_id,
         "status": "pending",
         "created_at": datetime.utcnow()
     })
     return True
 
+
 def approve_request(user_id: int):
-    requests_col.update_one(
-        {"user_id": user_id},
+    requests.update_one(
+        {"user_id": user_id, "status": "pending"},
         {"$set": {"status": "approved"}}
     )
 
+
 def reject_request(user_id: int):
-    requests_col.update_one(
-        {"user_id": user_id},
+    requests.update_one(
+        {"user_id": user_id, "status": "pending"},
         {"$set": {"status": "rejected"}}
     )
 
-def get_pending_requests():
-    return list(requests_col.find({"status": "pending"}))
+
+def has_pending_request(user_id: int) -> bool:
+    return bool(requests.find_one({"user_id": user_id, "status": "pending"}))
