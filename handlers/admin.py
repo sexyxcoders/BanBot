@@ -1,11 +1,16 @@
 from pyrogram import filters
 from bot import app
-from config import ADMINS
+from database.requests import approve_request, reject_request
+from utils.constants import APPROVED, REJECTED
 
-@app.on_message(filters.command("approve") & filters.user(ADMINS))
-async def approve(_, m):
-    await m.reply("✅ Request approved")
+@app.on_callback_query(filters.regex("^approve_"))
+async def approve_handler(_, q):
+    user_id = int(q.data.split("_")[1])
+    approve_request(user_id)
+    await q.message.edit("✅ Request approved.")
 
-@app.on_message(filters.command("reject") & filters.user(ADMINS))
-async def reject(_, m):
-    await m.reply("❌ Request rejected")
+@app.on_callback_query(filters.regex("^reject_"))
+async def reject_handler(_, q):
+    user_id = int(q.data.split("_")[1])
+    reject_request(user_id)
+    await q.message.edit("❌ Request rejected.")
