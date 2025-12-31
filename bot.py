@@ -1,15 +1,9 @@
 import logging
 from pyrogram import Client
-from config import (
-    API_ID,
-    API_HASH,
-    BOT_TOKEN,
-    MONGO_URI,
-    DB_NAME
-)
+from config import API_ID, API_HASH, BOT_TOKEN, MONGO_URI, DB_NAME
 from database.mongo import init_db
 
-# ─────────── LOGGING ───────────
+# ───────── LOGGING ─────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
@@ -21,18 +15,17 @@ logging.basicConfig(
 
 LOGGER = logging.getLogger(__name__)
 
-# ─────────── BOT CLIENT ───────────
+# ───────── BOT CLIENT ─────────
 app = Client(
-    name="ReferralBot",
+    "ReferralBot",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    workers=50,
-    in_memory=True
+    workers=50
 )
 
-# ─────────── LOAD HANDLERS ───────────
-def load_plugins():
+# ───────── LOAD HANDLERS ─────────
+def load_handlers():
     import handlers.start
     import handlers.menu
     import handlers.profile
@@ -42,14 +35,15 @@ def load_plugins():
     import handlers.feedback
     import handlers.admin
 
-# ─────────── STARTUP ───────────
-@app.on_startup()
-async def startup():
-    init_db(MONGO_URI, DB_NAME)
-    load_plugins()
-    LOGGER.info("✅ Referral Bot Started Successfully")
-
-# ─────────── RUN ───────────
+# ───────── MAIN ─────────
 if __name__ == "__main__":
     LOGGER.info("🚀 Starting Referral Bot...")
+
+    # Init Mongo BEFORE bot starts
+    init_db(MONGO_URI, DB_NAME)
+
+    # Load all handlers
+    load_handlers()
+
+    # Run bot
     app.run()
