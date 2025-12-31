@@ -1,21 +1,31 @@
+import logging
 from pyrogram import Client
-import config
+from config import API_ID, API_HASH, BOT_TOKEN
 
-app = Client(
-    "ReferralBot",
-    api_id=config.API_ID,
-    api_hash=config.API_HASH,
-    bot_token=config.BOT_TOKEN
+# ─── LOGGING ─────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.FileHandler("logs/bot.log"),
+        logging.StreamHandler()
+    ]
 )
 
-# Load handlers
-import handlers.start
-import handlers.menu
-import handlers.profile
-import handlers.refer
-import handlers.reward
-import handlers.request
-import handlers.feedback
-import handlers.admin
+LOGGER = logging.getLogger(__name__)
 
-app.run()
+# ─── PYROGRAM APP ────────────────────────────────────
+app = Client(
+    "ReferralBot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
+)
+
+# ─── LOAD HANDLERS ───────────────────────────────────
+import handlers  # IMPORTANT: loads all handlers
+
+# ─── START BOT ───────────────────────────────────────
+if __name__ == "__main__":
+    LOGGER.info("🚀 Referral Bot Started Successfully")
+    app.run()
