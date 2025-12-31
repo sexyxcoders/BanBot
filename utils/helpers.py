@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
-def now_utc():
+def utc_now():
     return datetime.utcnow()
 
-def after_24_hours(time):
-    return time + timedelta(hours=24)
+def after_24_hours(dt):
+    return dt + timedelta(hours=24)
