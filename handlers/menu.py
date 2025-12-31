@@ -1,10 +1,7 @@
 from pyrogram import filters
+from pyrogram.types import CallbackQuery
 from bot import app
-from keyboards.main import main_inline
 
-@app.on_callback_query(filters.regex("^menu$"))
-async def menu_handler(_, q):
-    await q.message.edit(
-        "🏠 **Main Menu**",
-        reply_markup=main_inline
-    )
+@app.on_callback_query()
+async def callback_test(_, cq: CallbackQuery):
+    await cq.answer("✅ Button clicked!", show_alert=True)
