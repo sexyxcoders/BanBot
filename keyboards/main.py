@@ -1,14 +1,15 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-main_inline = InlineKeyboardMarkup(
-    [
+def main_menu():
+    return InlineKeyboardMarkup(
         [
-            InlineKeyboardButton("📝 Feedback", callback_data="feedback"),
-            InlineKeyboardButton("🎁 Reward", callback_data="reward")
-        ],
-        [
-            InlineKeyboardButton("👤 Profile", callback_data="profile"),
-            InlineKeyboardButton("👥 Refer", callback_data="refer")
+            [
+                InlineKeyboardButton("🎁 Reward", callback_data="reward"),
+                InlineKeyboardButton("👤 Profile", callback_data="profile")
+            ],
+            [
+                InlineKeyboardButton("🔗 Refer", callback_data="refer"),
+                InlineKeyboardButton("💬 Feedback", callback_data="feedback")
+            ]
         ]
-    ]
-)
+    )
