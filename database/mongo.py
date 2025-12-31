@@ -1,8 +1,15 @@
 from pymongo import MongoClient
-from config import MONGO_URI, DB_NAME
 
-client = MongoClient(MONGO_URI)
-db = client[DB_NAME]
+_client = None
+_db = None
 
-users = db.users
-requests = db.requests
+def init_db(mongo_uri: str, db_name: str):
+    global _client, _db
+    _client = MongoClient(mongo_uri)
+    _db = _client[db_name]
+    print("✅ MongoDB connected")
+
+def get_db():
+    if _db is None:
+        raise RuntimeError("❌ Database not initialized")
+    return _db
